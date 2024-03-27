@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"fmt"
-	"ts-gen-ca/internal/utils"
+	"github.com/modsyan/TS-Gen-CA/internal/utils"
 )
 
 func GenerateIndexFile(featureName string, useCaseName string, useCaseFileName string, requestFileName string) error {

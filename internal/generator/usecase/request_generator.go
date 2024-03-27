@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/modsyan/TS-Gen-CA/internal/utils"
 	"strings"
-	"ts-gen-ca/internal/utils"
 )
 
 func GenerateRequestFile(requestFilePath, requestClassName string, properties []string) error {

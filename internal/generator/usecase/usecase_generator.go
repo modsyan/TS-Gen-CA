@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"fmt"
+	"github.com/modsyan/TS-Gen-CA/internal/utils"
 	"os"
-	"ts-gen-ca/internal/utils"
 )
 
 func GenerateUseCaseFile(useCaseFilePath string, useCaseClassName string, requestClassName string, requestFileName string, returnType string) error {

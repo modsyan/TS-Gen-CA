@@ -1,3 +1,3 @@
-module ts-gen-ca
+module github.com/modsyan/TS-Gen-CA
 
-go 1.22
+go 1.22.1

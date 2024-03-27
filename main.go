@@ -3,17 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/modsyan/TS-Gen-CA/cmd"
+	"github.com/modsyan/TS-Gen-CA/internal/utils"
 	"os"
-	"ts-gen-ca/cmd"
-	"ts-gen-ca/internal/utils"
 )
 
 func main() {
 	//  flags
-	featureFlag := flag.String("fn", "Test", "Name of the feature")
-	useCaseFlag := flag.String("uc", "test-usecase", "Name of the use case")
-	propertyFlag := flag.String("p", "testId:string testName:string testAge:number", "Properties of the use case")
-	returnTypeFlag := flag.String("rt", "string", "ReturnType of the use case")
+	featureFlag := flag.String("fn", "", "Name of the feature")
+	useCaseFlag := flag.String("uc", "", "Name of the use case")
+	propertyFlag := flag.String("p", "", "Properties of the use case")
+	returnTypeFlag := flag.String("rt", "", "ReturnType of the use case")
 	flag.Parse()
 
 	// Check if feature name is provided
