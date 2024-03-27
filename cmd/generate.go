@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/modsyan/TS-Gen-CA/internal/generator/usecase"
-	"github.com/modsyan/TS-Gen-CA/internal/utils"
+	"github.com/modsyan/TsCa/internal/generator/usecase"
+	"github.com/modsyan/TsCa/internal/utils"
 )
 
 func GenerateFiles(featureName, useCaseName string, properties []string, returnType string) error {

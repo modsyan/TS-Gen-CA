@@ -3,51 +3,90 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/modsyan/TS-Gen-CA/cmd"
-	"github.com/modsyan/TS-Gen-CA/internal/utils"
+	"github.com/modsyan/TsCa/cmd"
+	"github.com/modsyan/TsCa/internal/utils"
 	"os"
 )
 
 func main() {
+	//todo: adding subcommand generate and new
+
+	generateCmd := flag.NewFlagSet("generate", flag.ExitOnError)
+
 	//  flags
-	featureFlag := flag.String("fn", "", "Name of the feature")
-	useCaseFlag := flag.String("uc", "", "Name of the use case")
-	propertyFlag := flag.String("p", "", "Properties of the use case")
-	returnTypeFlag := flag.String("rt", "", "ReturnType of the use case")
-	flag.Parse()
+	featureFlag := generateCmd.String("feature-name", "", "Name of the feature")
+	featureFlagShort := generateCmd.String("fn", "", "Name of the feature (short)")
+	useCaseFlag := generateCmd.String("usecase-name", "", "Name of the use case")
+	useCaseFlagShort := generateCmd.String("un", "", "Name of the use case (short)")
+	propertiesFlag := generateCmd.String("property", "", "Properties of the use case")
+	propertiesFlagShort := generateCmd.String("p", "", "Properties of the use case (short)")
+	returnTypeFlag := generateCmd.String("return-type", "", "ReturnType of the use case")
+	returnTypeFlagShort := generateCmd.String("rt", "", "ReturnType of the use case (short)")
 
-	// Check if feature name is provided
-	if *featureFlag == "" {
-		fmt.Println("Please provide a feature name using --feature or -fn flag")
+	if len(os.Args) < 2 {
+		fmt.Println("Please provide a subcommand [ generate ]")
 		os.Exit(1)
 	}
 
-	// Check if use case name is provided
-	if *useCaseFlag == "" {
-		fmt.Println("Please provide a use case name using --usecase or -un flag")
-		os.Exit(1)
-	}
-	// Check if property list is provided
-	if *propertyFlag == "" {
-		fmt.Println("Please provide properties using --property or -p flag")
-		os.Exit(1)
-	}
-
-	if *returnTypeFlag == "" {
-		fmt.Println("Please provide return type using --returnType or -rt flag")
+	switch os.Args[1] {
+	case "generate":
+		err := generateCmd.Parse(os.Args[2:])
+		if err != nil {
+			fmt.Println("Parsing error, please try again.")
+			os.Exit(1)
+		}
+	default:
+		fmt.Printf("'%s' is not a valid subcommand\n", os.Args[1])
 		os.Exit(1)
 	}
 
-	featureName := *featureFlag
-	useCaseName := *useCaseFlag
-	properties := utils.ParseProperties(*propertyFlag)
-	returnType := *returnTypeFlag
+	if generateCmd.Parsed() {
+		if *featureFlag == "" && *featureFlagShort == "" {
+			fmt.Println("Please provide a feature name using --feature-name or -fn flag")
+			os.Exit(1)
+		}
 
-	err := cmd.GenerateFiles(featureName, useCaseName, properties, returnType)
-	if err != nil {
-		fmt.Printf("Error generating files: %v\n", err)
-		os.Exit(1)
+		if *useCaseFlag == "" && *useCaseFlagShort == "" {
+			fmt.Println("Please provide a use case name using --usecase-name or -un flag")
+			os.Exit(1)
+		}
+
+		if *propertiesFlag == "" && *propertiesFlagShort == "" {
+			fmt.Println("Please provide properties using --property or -p flag")
+			os.Exit(1)
+		}
+
+		if *returnTypeFlag == "" && *returnTypeFlagShort == "" {
+			fmt.Println("Please provide return type using --return-type or -rt flag")
+			os.Exit(1)
+		}
+
+		featureName := *featureFlag
+		if *featureFlag == "" {
+			featureName = *featureFlagShort
+		}
+
+		useCaseName := *useCaseFlag
+		if *useCaseFlag == "" {
+			useCaseName = *useCaseFlagShort
+		}
+
+		properties := utils.ParseProperties(*propertiesFlag)
+		if *propertiesFlag == "" {
+			properties = utils.ParseProperties(*propertiesFlagShort)
+		}
+
+		returnType := *returnTypeFlag
+		if *returnTypeFlag == "" {
+			returnType = *returnTypeFlagShort
+		}
+
+		err := cmd.GenerateFiles(featureName, useCaseName, properties, returnType)
+		if err != nil {
+			fmt.Printf("Error generating files: %v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Printf("TypeScript files '%s' and '%s' created successfully in the '%s' folder.\n", useCaseName+"Request.request.ts", useCaseName+"UseCase.usecase.ts", featureName)
 	}
-
-	fmt.Printf("TypeScript files '%s' and '%s' created successfully in the '%s' folder.\n", useCaseName+"Request.request.ts", useCaseName+"UseCase.usecase.ts", featureName)
 }

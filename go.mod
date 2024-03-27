@@ -1,3 +1,3 @@
-module github.com/modsyan/TS-Gen-CA
+module github.com/modsyan/TsCa
 
 go 1.22.1
