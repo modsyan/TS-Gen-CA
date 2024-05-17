@@ -18,14 +18,14 @@ func GenerateFiles(featureName, useCaseName string, properties []string, returnT
 		return fmt.Errorf("error creating directory: %v", err)
 	}
 
-	useCaseFileName := fmt.Sprintf("%s.usecase", useCaseName)
-	requestFileName := fmt.Sprintf("%s.request", useCaseName)
+	useCaseFileName := fmt.Sprintf("%s-%s.usecase", useCaseName, featureName)
+	requestFileName := fmt.Sprintf("%s-%s.request", useCaseName, featureName)
 
 	useCaseFilePath := fmt.Sprintf("%s/%s/%s.ts", featureName, useCaseName, useCaseFileName)
 	requestFilePath := fmt.Sprintf("%s/%s/%s.ts", featureName, useCaseName, requestFileName)
 
-	useCaseClassName := utils.ConvertToPascalCase(useCaseName) + "UseCase"
-	requestClassName := utils.ConvertToPascalCase(useCaseName) + "Request"
+	useCaseClassName := utils.ConvertToPascalCase(useCaseName) + utils.ConvertToPascalCase(featureName) + "UseCase"
+	requestClassName := utils.ConvertToPascalCase(useCaseName) + utils.ConvertToPascalCase(featureName) + "Request"
 
 	err := usecase.GenerateRequestFile(requestFilePath, requestClassName, properties)
 	if err != nil {
